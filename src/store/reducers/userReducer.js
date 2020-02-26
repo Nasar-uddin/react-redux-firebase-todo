@@ -3,27 +3,50 @@ let initState = {
     isLoggingIn:false,
     isLogInError:false,
     logInErrorMsg:'',
-    isLoggingOut:false,
+    logOutError:false,
     user:{}
 }
 
 function userReducer(state=initState,action){
     switch(action.type){
-        // case 'LOGIN_REQUEST':
-        //     state.isLoggingIn = true
-        //     state.isLogInError = false
-        //     return state
         case 'LOGIN_SUCCESS':
-            console.log(action.payload);
-            state.isLogedIn = true
-            state.user = action.payload.user
-            state.isLogInError = false
-            return state
+            return {
+                ...state,
+                isLogedIn:true,
+                isLogInError:false,
+                logInErrorMsg:'',
+                user:action.payload.user
+            }
         case 'LOGIN_FAILURE':
-            console.log('fail');
-            state.isLogInError = true
-            state.logInErrorMsg = "Can't log in"
-            return state
+            // console.log('fail');
+            return {
+                ...state,
+                isLogInError:true,
+                logInErrorMsg:"Can't login"
+            }
+        case 'FOUND_USER':
+            // console.log(action.payload);
+            return {
+                ...state,
+                isLogedIn:true,
+                isLogInError:false,
+                user:action.payload
+            }
+        case 'NO_USER_FOUND':
+            return {
+                ...state,
+                isLogedIn:false
+            }
+        case 'LOGOUT_SUCCESS':
+            return {
+                ...state,
+                isLogedIn:false
+            }
+        case 'LOGOUT_ERROR':
+            return {
+                ...state,
+                logOutError:true
+            }
         default:
             return state;
     }
