@@ -15,7 +15,7 @@ class Navbar extends Component {
                         <Link to="/" className="brand-logo">Fuck you fb</Link>
                             {this.props.isLogedIn?(
                                 <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                     <li><NavLink to="login">ToDos</NavLink></li>
+                                     <li><NavLink to="/addtodo">Add Todo</NavLink></li>
                                      <li><button className="btn red" onClick={this.logOutTheUser}>Sign Out</button></li>
                                 </ul>
                             ):(

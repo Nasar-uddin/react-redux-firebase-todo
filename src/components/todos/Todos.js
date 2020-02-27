@@ -1,14 +1,33 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import TodoSummary from './TodoSummary'
 
-export default class Todos extends Component {
+
+class Todos extends Component{
     render() {
+        // console.log(this.props)
+        let todos = this.props.todos.todos.length>0?(
+            this.props.todos.todos.map(todo=>{
+                return (
+                    <div className="col s6" key={todo.id}>
+                        <TodoSummary todo={todo}/>
+                    </div>
+                )
+            })
+        ):(<h4>No Post available</h4>)
         return (
             <div className="container">
                 <div className="row">
-                    <h1>I am to do list page.</h1>
-                    <p>I will be implemented later</p>
+                    {todos}
                 </div>
             </div>
         )
     }
 }
+
+const mapStateToProps = ({todos})=>{
+    return {
+        todos:todos
+    }
+}
+export default connect(mapStateToProps)(Todos);

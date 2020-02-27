@@ -14,7 +14,7 @@ firebaseApp.auth().onAuthStateChanged((user)=>{
             type:'FOUND_USER',
             payload:user
         });
-        console.log(store.getState());
+        // console.log(store.getState());
         ReactDOM.render(<Provider store={store}><App/></Provider>, document.getElementById('root'));
     }else{
         store.dispatch({
