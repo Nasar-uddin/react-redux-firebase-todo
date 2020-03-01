@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import { fetchSingleTodoAction } from '../../store/actions/todoAction'
+import {Link, Redirect} from 'react-router-dom'
+import { fetchSingleTodoAction,deleteTodoAction } from '../../store/actions/todoAction'
 
 
 class TodoDetails extends Component {
     componentDidMount(){
         const todoId = this.props.match.params.todo_id
         this.props.fetchSingleTodo(todoId)
+    }
+    deleteTodo = ()=>{
+        this.props.deleteTodo(this.props.todo.id)
+        // console.log(this.props.todo.id)
     }
     render() {
         if(this.props.todo===null){
@@ -18,23 +22,21 @@ class TodoDetails extends Component {
                 </div>
             </div>
             )
+        }else if(this.props.isDeleted){
+            return (<Redirect to="/"/>)
         }
-        // const d = new Date(this.props.todo.createdAt.seconds)
-        // console.log(this.props.todo)
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col s8 offset-s2 z-depth-0">
-                        <div className="">
-                            <h4>{this.props.todo.title}</h4>
-                            <hr/>
-                            <p>{this.props.todo.content}</p>
-                            <p className="right"><small>On:<strong>{Date(this.props.todo.createdAt.seconds)}</strong></small></p>
-                        </div>
-                        <div className="block">
-                        {/* <hr/> */}
-                            <Link to={"/todo/edit/"+this.props.todo.id} className="btn teal right">Edit Todo</Link>
-                        </div>
+                    <div className="col s8 offset-s2">
+                        <h4>{this.props.todo.title}</h4>
+                        <hr/>
+                        <p>{this.props.todo.content}</p>
+                        <p className="right"><small>On:<strong>{Date(this.props.todo.createdAt.seconds)}</strong></small></p>
+                    </div>
+                    <div className="col s8 offset-s2">
+                        <Link to={"/todo/edit/"+this.props.todo.id} className="btn teal">Edit Todo</Link>
+                        <button className="btn red right" onClick={this.deleteTodo}>Delete Todo</button>
                     </div>
                 </div>
             </div>
@@ -43,13 +45,17 @@ class TodoDetails extends Component {
 }
 const mapStateToProps = (state)=>{
     return {
-        todo:state.todos.singleTodo
+        todo:state.todos.singleTodo,
+        isDeleted: state.todos.todoDeleted
     }
 }
 const mapDispatchToProps = (dispatch)=>{
     return {
         fetchSingleTodo:(todoId)=>{
             dispatch(fetchSingleTodoAction(todoId))
+        },
+        deleteTodo:(todoId)=>{
+            dispatch(deleteTodoAction(todoId))
         }
     }
 }

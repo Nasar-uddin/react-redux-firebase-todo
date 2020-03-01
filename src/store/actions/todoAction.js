@@ -116,6 +116,21 @@ export function editSingleTodoAction(todoId,title,content){
     }
 }
 
+export function deleteTodoAction(todoId){
+    return (dispatch)=>{
+        const todoRef = db.collection('todos').doc(todoId)
+        todoRef.delete().then(res=>{
+            dispatch({
+                type:'DELETE_TODO'
+            })
+        }).catch(err=>{
+            dispatch({
+                type:'DELETE_TODO_ERROR'
+            })
+        })
+    }
+}
+
 export function makeNewTodoAddedFalse(){
     return (dispatch)=>{
         dispatch({

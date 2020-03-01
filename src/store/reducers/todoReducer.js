@@ -8,7 +8,9 @@ let initState = {
     todoUpdateErro:false,
     todos:[],
     singleTodo:null,
-    todoThatWillUpdate:null
+    todoThatWillUpdate:null,
+    todoDeleted:false,
+    todoDeleteError:false
 }
 
 function todoReducer(state=initState,action){
@@ -32,7 +34,8 @@ function todoReducer(state=initState,action){
             return {
                 ...state,
                 newTodoAdded:false,
-                todoUpdated:false
+                todoUpdated:false,
+                todoDeleted:false
             }
         case 'TODOS_FETCHED':
             return {
@@ -72,14 +75,18 @@ function todoReducer(state=initState,action){
                 ...state,
                 todoThatWillUpdate:action.payload
             }
-        case 'REAL_UPDATE':
+        case 'DELETE_TODO':
             return {
                 ...state,
-                todoThatWillUpdate:{
-                    title:action.payload.title,
-                    content:action.payload.content
-                }
+                todoDeleted:true,
+                todoDeleteError:false
             }
+            case 'DELETE_TODO_ERROR':
+                return {
+                    ...state,
+                    todoDeleted:false,
+                    todoDeleteError:true
+                }
         default:
             return state;
     }
