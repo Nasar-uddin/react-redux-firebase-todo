@@ -8,7 +8,7 @@ class Todos extends Component{
     componentDidMount(){
         if(this.props.isLogedIn){
             this.props.makeNewTodoAddedFalse()
-            this.props.fetchTodos(this.props.userId,4)
+            this.props.fetchTodos(this.props.userId,5)
         }
     }
     render() {

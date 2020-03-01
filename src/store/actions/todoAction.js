@@ -18,10 +18,11 @@ export function addTodoAction(todo){
         })
     }
 }
+
 export function fetchTodoAction(userId,limit=10){
     return (dispatch)=>{
         const todoRef = db.collection('todos')
-        todoRef.where('userId','==',userId)
+        todoRef.where('userId','==',userId).limit(limit)
         .get().then(querySnapshot=>{
             let data = []
             querySnapshot.forEach(doc=>{
@@ -43,6 +44,78 @@ export function fetchTodoAction(userId,limit=10){
         })
     }
 }
+
+export function fetchSingleTodoAction(todoId){
+    return (dispatch)=>{
+        let todoRef = db.collection('todos').doc(todoId)
+        todoRef.get().then(doc=>{
+            if(doc.exists){
+                const d = {
+                    ...doc.data(),
+                    id:todoId
+                }
+                dispatch({
+                    type:'FETCH_SINGLE_TODO',
+                    payload:d
+                })
+            }else{
+                dispatch({
+                    type:'FETCH_SINGLE_TODO_ERROR'
+                })
+            }
+        }).catch(err=>{
+            dispatch({
+                type:'FETCH_SINGLE_TODO_ERROR'
+            })
+            // console.log(err)
+        })
+    }
+}
+
+export function fetchSingleTodoForUpdate(todoId){
+    return (dispatch)=>{
+        const todoRef = db.collection('todos').doc(todoId)
+        todoRef.get().then(doc=>{
+            if(doc.exists){
+                const d = {
+                    ...doc.data(),
+                    id:todoId
+                }
+                dispatch({
+                    type:'FETCH_SINGLE_TODO_FOR_UPDATE',
+                    payload:d
+                })
+            }else{
+                dispatch({
+                    type:'FETCH_SINGLE_TODO_ERROR'
+                })
+            }
+        }).catch(err=>{
+            dispatch({
+                type:'FETCH_SINGLE_TODO_ERROR'
+            })
+        })
+    }
+}
+
+export function editSingleTodoAction(todoId,title,content){
+    return (dispatch)=>{
+        const todoRef = db.collection('todos').doc(todoId)
+        todoRef.update({
+            title:title,
+            content:content
+        }).then(res=>{
+            dispatch({
+                type:'TODO_UPDATED'
+            })
+        }).catch(err=>{
+            dispatch({
+                type:'TODO_UPDATE_ERROR'
+            })
+        })
+    }
+}
+
 export function makeNewTodoAddedFalse(){
     return (dispatch)=>{
         dispatch({

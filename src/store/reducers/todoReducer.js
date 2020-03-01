@@ -3,7 +3,12 @@ let initState = {
     addTodoError:false,
     newTodoAdded:false,
     fetchTodoError:false,
-    todos:[]
+    fetchSingleTodoError:false,
+    todoUpdated:false,
+    todoUpdateErro:false,
+    todos:[],
+    singleTodo:null,
+    todoThatWillUpdate:null
 }
 
 function todoReducer(state=initState,action){
@@ -26,7 +31,8 @@ function todoReducer(state=initState,action){
         case 'READY_FOR_NEW_TODO':
             return {
                 ...state,
-                newTodoAdded:false
+                newTodoAdded:false,
+                todoUpdated:false
             }
         case 'TODOS_FETCHED':
             return {
@@ -38,6 +44,41 @@ function todoReducer(state=initState,action){
             return {
                 ...state,
                 fetchTodoError:true
+            }
+        case 'FETCH_SINGLE_TODO':
+            return {
+                ...state,
+                fetchSingleTodoError:false,
+                singleTodo:action.payload
+            }
+        case 'FETCH_SINGLE_TODO_ERROR':
+            return {
+                ...state,
+                fetchSingleTodoError:true
+            }
+        case 'TODO_UPDATED':
+            return {
+                ...state,
+                todoUpdated:true,
+                todoUpdateErro:false
+            }
+        case 'TODO_UPDATE_ERROR':
+            return {
+                ...state,
+                todoUpdateErro:true
+            }
+        case 'FETCH_SINGLE_TODO_FOR_UPDATE':
+            return {
+                ...state,
+                todoThatWillUpdate:action.payload
+            }
+        case 'REAL_UPDATE':
+            return {
+                ...state,
+                todoThatWillUpdate:{
+                    title:action.payload.title,
+                    content:action.payload.content
+                }
             }
         default:
             return state;
