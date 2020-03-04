@@ -4,6 +4,8 @@ let initState = {
     isLogInError:false,
     logInErrorMsg:'',
     logOutError:false,
+    signUpError:false,
+    signUpErrorMsg:null,
     user:{}
 }
 
@@ -46,6 +48,21 @@ function userReducer(state=initState,action){
             return {
                 ...state,
                 logOutError:true
+            }
+        case 'SIGN_UP_ERROR':
+            return {
+                ...state,
+                signUpError:true,
+                signUpErrorMsg:action.payload
+            }
+        case 'SIGN_UP_SUCCESS':
+            console.log('Sign up success')
+            return {
+                ...state,
+                isLogedIn:true,
+                signUpError:false,
+                signUpErrorMsg:null,
+                user:action.payload
             }
         default:
             return state;

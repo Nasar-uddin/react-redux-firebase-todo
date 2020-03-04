@@ -39,7 +39,8 @@ const mapStateToProps = (state)=>{
     return {
         todos:state.todos,
         isLogedIn:state.user.isLogedIn,
-        userId:state.user.user.uid
+        userId:state.user.user.uid,
+        user: state.user.user
     }
 }
 const mapDispatchToProps = (dispatch)=>{
